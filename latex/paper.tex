@@ -1,0 +1,182 @@
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+% LaTeX Example: Project Report
+%
+% Source: http://www.howtotex.com
+%
+% Feel free to distribute this example, but please keep the referral
+% to howtotex.com
+% Date: March 2011 
+% 
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+% How to use writeLaTeX: 
+%
+% You edit the source code here on the left, and the preview on the
+% right shows you the result within a few seconds.
+%
+% Bookmark this page and share the URL with your co-authors. They can
+% edit at the same time!
+%
+% You can upload figures, bibliographies, custom classes and
+% styles using the files menu.
+%
+% If you're new to LaTeX, the wikibook is a great place to start:
+% http://en.wikibooks.org/wiki/LaTeX
+%
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+% Edit the title below to update the display in My Documents
+%\title{Project Report}
+%
+%%% Preamble
+
+% Used in the explanation text
+\documentclass[paper=a4, fontsize=11pt]{scrartcl}
+% Used in the explanation text
+\usepackage[colorlinks]{hyperref}
+\usepackage[T1]{fontenc}
+\usepackage{fourier}
+
+\usepackage[english]{babel}															% English language/hyphenation
+\usepackage[protrusion=true,expansion=true]{microtype}	
+\usepackage{amsmath,amsfonts,amsthm} % Math packages
+\usepackage[pdftex]{graphicx}	
+\usepackage{url}
+
+
+%%% Custom sectioning
+\usepackage{sectsty}
+\allsectionsfont{\centering \normalfont\scshape}
+
+
+%%% Custom headers/footers (fancyhdr package)
+\usepackage{fancyhdr}
+\pagestyle{fancyplain}
+\fancyhead{}											% No page header
+\fancyfoot[L]{}											% Empty 
+\fancyfoot[C]{}											% Empty
+\fancyfoot[R]{\thepage}									% Pagenumbering
+\renewcommand{\headrulewidth}{0pt}			% Remove header underlines
+\renewcommand{\footrulewidth}{0pt}				% Remove footer underlines
+\setlength{\headheight}{0pt}
+
+
+%%% Equation and float numbering
+\numberwithin{equation}{section}		% Equationnumbering: section.eq#
+\numberwithin{figure}{section}			% Figurenumbering: section.fig#
+\numberwithin{table}{section}				% Tablenumbering: section.tab#
+
+
+%%% Maketitle metadata
+\newcommand{\horrule}[1]{\rule{\linewidth}{#1}} 	% Horizontal rule
+
+\title{
+		%\vspace{-1in} 	
+		\usefont{OT1}{bch}{b}{n}
+		\normalfont \normalsize \textsc{IFT6390- The University of Montreal} \\ [25pt]
+		\horrule{0.5pt} \\[0.4cm]
+		\huge Technical Report for Model Card Project  \\
+		\horrule{2pt} \\[0.5cm]
+}
+\author{
+		\normalfont 								\normalsize
+        Saba Ahmadi, Mahsa Najimoghaddam\\[-3pt]		\normalsize
+        \today
+}
+\date{}
+
+
+%%% Begin document
+\begin{document}
+\maketitle
+\section{Data}
+The data of census data or adult data is downloaded from \href {https://archive.ics.uci.edu/ml/machine-learning-databases/adult/adult.data}{UCI website}. However, we first downloaded data from \href {https://www.kaggle.com}{Kaggle website}, but in the auto fetching data in run.py from Kaggle we encountered a problem; therefore, we decided to download from the UCI website. Hence, the column names is gotten from the Kaggle census data.
+
+\subsection{Explanation of data features and pre-processing}
+The data contains 32561 labeled data, we want to predict if a person has income greater or less than to 50K. The data has following features, first we mention all numerical features then we explain other features:
+\scriptsize{
+\begin{enumerate}
+    \item Age, capital-gain, capital-loss, hours-per-week: Numerical. We changed the capital-gain to (capital-gain – capital-loss) and then dropped the capital-loss column. Also, we normalized all the numerical value by subtracting by mean and dividing by standard deviation).
+    \item workclass: Categorical. The value it can take and associated frequency is as follows: Private(0.69), Self-emp-not-inc(0.07), Local-gov(0.064),?                   (0.056),State-gov(0.039), Self-emp-inc(0.034),Federal-gov        (0.029), Without-pay(0.0004), Never-worked(0.00021). we first changed the ‘?’ value with ‘'not recorded', and then we added dummy variables for all categories and dropped the original column. 
+    \item fnlwgt: Numerical. The final weight shows each row is presenting how many people in the original population. We won’t use this feature as for a new test data in real world we wouldn’t know this value, so we dropped this column.
+    \item education: Ordinal. The value it can take and associated frequency is as follows: HS-grad (0.32),Some-college(0.22), Bachelors(0.16), Masters(0.05), Assoc-voc(0.04),11th(0.03),Assoc-acdm(0.03),10th (0.02), 7th-8th(0.01), Pro f-school(0.01), 9th(0.01), 12th(0.01), Doctorate(0.01), 5th-6th(0.01), 1st-4th(0.005), Preschool(0.0001). We replace each education to a number that shows the order and then we normalize it like a numerical data.
+    \item education-num: Numerical. It shows the years each person spent in education. We dropped this column because education column already shows how much person is educated.
+    \item marital-status: Categorical. It can take following values (sorted by frequency): Married-civ-spouse, Never-married, Divorced, Separated, Widowed, Married-spouse-absent, Married-AF-spouse. We replaced these values with married and single only, and then we added dummy variables for them and dropped the original column.
+    \item occupation: Categorical. It can take following values( sorted by frequency): Prof-specialty, , Craft-repair, , Exec-managerial, Adm-clerical, Sales, Other-service, Machine-op-inspct, ?, Transport-moving, Handlers-cleaners, Farming-fishing, Tech-support, Protective-serv, Priv-house-serv, Armed-Forces. We replaced ‘?’ value with ‘not recorded’, and then We added dummy variables for each category.
+    \item relationship: Categorical. It can take following values (sorted by frequency): Wife, Own-child, Husband, Not-in-family, Other-relative, Unmarried. We dropped this column.
+    \item race: Categorical. It can take following values (sorted by frequency): White (0.85), Black (0.09), Asian-Pac-Islander (0.03), Amer-Indian-Eskimo (0.009), Other( 0.008). We added dummy variables for each category and dropped the original column.
+    \item sex: Categorical. It can take following values (sorted by frequency): Male (0.66), Female (0.33). We added dummy variables for each category and dropped the original column.
+    \item native-country: Categorical. It can takes value: United-States(0.89), Mexico(0.01), and many other countries. We first replace all other countries to other and then we added dummy variables for each category and dropped the original column.
+    \item We add a column of ones to use it as bias for Logistic regression.
+\end{enumerate}
+}
+
+\subsection{Splitting the data}
+\begin{itemize}
+     \item We randomly choose 60 percents of the total data for training.
+    \item  We randomly choose 20 percents of the total data  for cross validation.
+    \item  We randomly choose 20 percents of the total data  for testing.
+\end{itemize}
+
+\section{Model: Logistic Regression}
+We implemented logistic regression for classifying people who have income more or less than 50K per year. The dataset was imbalanced for these two classes and people with income less than or equal to 50K ratio to people with income more than 50K was 3:1.
+
+\subsection{Handling imbalances in the data}
+We considered imbalances in the data for implementing our model to get fair accuracy on both of classes. First, we compute a vector of coefficient of size of the data set we are computing the loss for, and the value of it will be 3 when the model incorrectly classifies the label of people who are in majority(>50K/year) incorrectly and the value of coefficient will be equal to one elsewhere. So, the loss function will be  $g(\mathbf{w}; \mathbf{x}, y) = \log( 1 + e^{- coef * y\ \mathbf{x}^T \mathbf{w}})$. As you can see, the loss is sensitive to the class that is in minority and penalizes more when the model classifies people who have income more than 50K incorrectly. So, we aim to minimize the mean loss: $$L(w) = \frac{1}{n}\sum_{i=1}^n g(\mathbf{w}; \mathbf{x}_i, y_i) + \frac{\lambda}{2} \| \mathbf{w}\|^2 $$\\
+Tuning decision threshold in linear regression: Before implementing cost sensitive loss function, we had a failed attempt to handle this imbalanced data. At the end of the linear regression we you use sigmoid function and if the result is greater than 0.5 we assign the test point the label of having more than income than 50K per year and otherwise we assign it less than or equal to 50K income per year. We tried to change this threshold (0.5) and unfortunately it ended up to really unstable predictability.
+
+
+\subsection{Gradient Descent}
+Also, we used gradient descent for reaching the minimum loss. 
+    $$\mathbf{w}_{t+1} = \mathbf{w}_t - \eta\ \nabla L (\mathbf{w}_t) \; .$$
+The gradient of the loss function is calculated below.
+
+$$\nabla L (\mathbf{w}_t) = \frac{(-coef*yx^t)(e^{-coef*yx^tw})}{(1+e^{-coef*yx^tw})} + \lambda \| \mathbf{w}\|$$
+
+Also, we take 100 steps for gradient decent, we chose this by plotting loss and error rate per iteration and we observed for a chosen regularization term the loss and error are well-behaved. By well-behaved we mean it descent properly and also is stable after 100 of iterations.
+
+\begin{figure}[h]
+\caption{Loss and error rate for regularization = 0.2, x axis shows iterations}
+\centering
+\includegraphics[width=0.8\textwidth]{loss_error_reg_0.2.pdf}
+\end{figure}
+
+
+Tuning regularization term for gradient decent:
+We used cross-validation set of size of 20 percents of the total data chosen randomly. We assumed the distribution of CV is like the original distribution and the training set. We computed the error rate for set of regularization term([0.2, 0.4, 0.8, 1.6]) and we chose 0.2 as it ended up to less error rate on whole evaluation set, you can see the error rate for whole population and also for the group in the minority (>50K/Year) in the table 2.1. Also, the step size is defined as 0.2.
+
+
+\begin{table}
+\caption{Comparing error-rate for different regularization terms}
+ \begin{tabular}{||c c c||} 
+ \hline
+ Regularization term & Error-rate on validation set & Error-rate for income > 50K on validation set  \\ [0.5ex] 
+ \hline\hline
+ 0.2 & 18.3\% & 31.15\% \\
+ \hline
+ 0.4 & 18.6\% & 47.33\% \\
+ \hline
+ 0.8 & 19.27\% & 63\% \\
+ \hline
+ 1.6 & 21.39\% & 81.43\%\\ [1ex] 
+ \hline
+\end{tabular}
+\end{table}
+
+\section{Evaluation}
+You can see confusion matrix in table 3.1. Total accuracy is 82.63\%. For seeing detailed evaluation please check out our model card (card.pdf) in the same directory that also consider accuracy on other subgroups.
+
+\begin{table}
+\centering
+\caption{Confusion matrix of trained model for the test data}
+ \begin{tabular}{||c c c||} 
+ \hline
+ Label & True & False  \\ [0.5ex] 
+ \hline\hline
+ >50K & 0.166308 & 0.103041 \\
+ \hline
+ <=50K & 0.660012 & 0.070639 \\
+ \hline
+\end{tabular}
+\end{table}
+
+%%% End document
+\end{document}
